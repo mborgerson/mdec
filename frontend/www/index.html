@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>mdec</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <style type="text/css" media="screen">
+html,
+body {
+  background-color: #222222;
+  color: #d4f542;
+  height: 100%;
+  margin: 0;
+  font-family: "Ubuntu Mono", Menlo, Consolas, monospace;
+}
+
+.mbox {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.mbox .mrow {
+}
+
+.mbox .mrow.header {
+  flex: 0 1 auto;
+}
+
+.mbox .mrow.header h1 {
+  float: left;
+  padding: 0.25em 0.25em 0 0.25em;
+}
+.mbox .mrow.header a {
+  text-decoration: none;
+  color: #d4f542;
+}
+
+.mbox .mrow.content {
+  display: flex;
+  flex-flow: column;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.mbox .mrow.footer {
+  flex: 0 1 1em;
+}
+
+.editor-row {
+  height:  100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.editor-col {
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+}
+
+.editor-col h3 {
+  text-align: center;
+  font-size: 1em;
+}
+
+.editor {
+  flex: 1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="mbox">
+  <div class="mrow header">
+    <h1><a href="https://github.com/mborgerson/mdec">mdec</a></h1>
+
+    <div class="d-flex flex-wrap align-items-center h-100">
+      <form class="col-12 col-lg-auto mb-2 mb-lg-0" method="post" action="" enctype="multipart/form-data" id="binform">
+      <input type="file" class="form-control form-control-sm" id="file" name="file" />
+      </form>
+
+      <div class="dropdown" style="padding: 0 0.25em">
+        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Settings
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+          <li>
+            <a href="#" class="dropdown-item" data-value="option-angr">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="angr" value="" id="angr-checkbox" checked>
+              <label class="form-check-label" for="angr-checkbox">angr</label>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item" data-value="option-binja">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="binja" value="" id="binja-checkbox" checked>
+              <label class="form-check-label" for="binja-checkbox">Binary Ninja</label>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item" data-value="option-ghidra">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="ghidra" value="" id="ghidra-checkbox" checked>
+              <label class="form-check-label" for="ghidra-checkbox">Ghidra</label>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-item" data-value="option-ida">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="ida" value="" id="ida-checkbox" checked>
+              <label class="form-check-label" for="ida-checkbox">IDA</label>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="mrow content">
+
+  <div class="editor-row">
+    <div class="editor-col" id="angr-col"><h3>angr</h3><div class="editor" id="angr-editor"></div></div>
+    <div class="editor-col" id="binja-col"><h3>Binary Ninja</h3><div class="editor" id="binja-editor"></div></div>
+    <div class="editor-col" id="ghidra-col"><h3>Ghidra</h3><div class="editor" id="ghidra-editor"></div></div>
+    <div class="editor-col" id="ida-col"><h3>IDA</h3><div class="editor" id="ida-editor"></div></div>
+  </div>
+
+  </div>
+<!--
+  <div class="mrow footer">
+    https://github.com/mborgerson/mdec
+  </div>
+ -->
+</div>
+
+
+<script type="text/javascript">
+
+    var services = ['angr', 'binja', 'ghidra', 'ida'];
+    var editors = {};
+    var options = [];
+
+    function update_window_title() {
+      var file = $('#file')[0].files[0];
+      if (file == undefined) {
+        document.title = 'mdec';
+      } else {
+        document.title = 'mdec: ' + file.name;
+      }
+    }
+
+    function decomp_for_service(svc) {
+      var fd = new FormData();
+      var file = $('#file')[0].files[0];
+      if (file == undefined) return;
+      fd.append('file', file);
+      $.ajax({
+          url: '/'+svc+'/decompile',
+          type: 'post',
+          data: fd,
+          contentType: false,
+          processData: false,
+          beforeSend: function(jqxhr, settings){
+              editors[svc].setValue("Loading...", -1);
+          },
+          success: function(response){
+              editors[svc].setValue(response, -1);
+          },
+          error: function(response){
+              editors[svc].setValue("Error", -1);
+          }
+      });
+    }
+
+    function show_or_hide_col_for_checkbox(chk) {
+      let svc = chk.attr('data-value');
+      let col = $('#' + svc + '-col');
+      if (chk.is(':checked')) {
+        col.show();
+        decomp_for_service(svc);
+      } else {
+        col.hide();
+      }
+    }
+
+    $('.service-checkbox').change(function() {
+      show_or_hide_col_for_checkbox($(this));
+    });
+
+    ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/');
+    for (let i = 0; i < services.length; i++) {
+      let svc = services[i];
+      var editor = ace.edit(svc + "-editor");
+      editor.setTheme("ace/theme/chaos");
+      editor.setFontSize(18);
+      editor.session.setMode("ace/mode/c_cpp");
+      editors[svc] = editor;
+    }
+
+    $(document).ready(function() {
+      update_window_title();
+      $('.service-checkbox').each(function() {
+        show_or_hide_col_for_checkbox($(this));
+      });
+
+      $("#file").change(function() {
+        update_window_title();
+        for (let i = 0; i < services.length; i++) {
+          let svc = services[i];
+          if ($("#" + svc + "-checkbox")[0].checked) {
+            decomp_for_service(svc);
+          }
+        }
+      });
+    });
+</script>
+
+</body>
+</html>
