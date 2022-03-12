@@ -67,6 +67,12 @@ body {
   font-size: 1em;
 }
 
+.editor-col .version {
+  white-space: pre-wrap;
+  font-size: 0.75em;
+  text-align: center;
+}
+
 .editor {
   flex: 1;
 }
@@ -140,13 +146,13 @@ body {
   <div class="mrow content">
 
   <div class="editor-row">
-    <div class="editor-col" id="angr-col"><h3>angr</h3><div class="editor" id="angr-editor"></div></div>
-    <div class="editor-col" id="binja-col"><h3>Binary Ninja</h3><div class="editor" id="binja-editor"></div></div>
-    <div class="editor-col" id="ghidra-col"><h3>Ghidra</h3><div class="editor" id="ghidra-editor"></div></div>
-    <div class="editor-col" id="ida-col"><h3>IDA</h3><div class="editor" id="ida-editor"></div></div>
-    <div class="editor-col" id="reko-col"><h3>Reko</h3><div class="editor" id="reko-editor"></div></div>
-    <div class="editor-col" id="retdec-col"><h3>RetDec</h3><div class="editor" id="retdec-editor"></div></div>
-    <div class="editor-col" id="snowman-col"><h3>Snowman</h3><div class="editor" id="snowman-editor"></div></div>
+    <div class="editor-col" id="angr-col"><h3>angr</h3><div class="version" id="angr-version"></div><div class="editor" id="angr-editor"></div></div>
+    <div class="editor-col" id="binja-col"><h3>Binary Ninja</h3><div class="version" id="binja-version"></div><div class="editor" id="binja-editor"></div></div>
+    <div class="editor-col" id="ghidra-col"><h3>Ghidra</h3><div class="version" id="ghidra-version"></div><div class="editor" id="ghidra-editor"></div></div>
+    <div class="editor-col" id="ida-col"><h3>IDA</h3><div class="version" id="ida-version"></div><div class="editor" id="ida-editor"></div></div>
+    <div class="editor-col" id="reko-col"><h3>Reko</h3><div class="version" id="reko-version"></div><div class="editor" id="reko-editor"></div></div>
+    <div class="editor-col" id="retdec-col"><h3>RetDec</h3><div class="version" id="retdec-version"></div><div class="editor" id="retdec-editor"></div></div>
+    <div class="editor-col" id="snowman-col"><h3>Snowman</h3><div class="version" id="snowman-version"></div><div class="editor" id="snowman-editor"></div></div>
   </div>
 
   </div>
@@ -162,6 +168,7 @@ body {
 
     var services = ['angr', 'binja', 'ghidra', 'ida', 'reko', 'retdec', 'snowman'];
     var editors = {};
+    var version_boxes = {};
     var options = [];
 
     function update_window_title() {
@@ -178,6 +185,13 @@ body {
       var file = $('#file')[0].files[0];
       if (file == undefined) return;
       fd.append('file', file);
+      $.ajax({
+          url: '/'+svc+'/version',
+          type: 'get',
+          success: function(response){
+            version_boxes[svc].text(response);
+          }
+      })
       $.ajax({
           url: '/'+svc+'/decompile',
           type: 'post',
@@ -229,6 +243,7 @@ body {
       editor.setFontSize(18);
       editor.session.setMode("ace/mode/c_cpp");
       editors[svc] = editor;
+      version_boxes[svc] = $('#' + svc + "-version");
     }
 
     $(document).ready(function() {

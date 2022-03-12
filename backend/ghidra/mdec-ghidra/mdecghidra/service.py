@@ -1,5 +1,6 @@
 import os
 import subprocess
+import tempfile
 
 from mdecbase import Service
 
@@ -22,3 +23,15 @@ class GhidraService(Service):
         finally:
             os.chdir(original_cwd)
         return code
+
+    def version(self) -> str:
+        original_cwd = os.getcwd()
+        version = ''
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                os.chdir(tmp)
+                subprocess.run(['/opt/ghidra/support/pythonRun', '/opt/ghidra/version.py'])
+                version = open('version.txt').read()
+        finally:
+            os.chdir(original_cwd)
+        return version
