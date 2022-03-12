@@ -91,45 +91,45 @@ body {
         </button>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
           <li>
-            <a href="#" class="dropdown-item" data-value="option-angr">
+            <a href="#" class="dropdown-item service-checkbox-link" for="angr-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="angr" value="" id="angr-checkbox" checked>
-              <label class="form-check-label" for="angr-checkbox">angr</label>
+              angr
             </a>
           </li>
           <li>
-            <a href="#" class="dropdown-item" data-value="option-binja">
+            <a href="#" class="dropdown-item service-checkbox-link" for="binja-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="binja" value="" id="binja-checkbox" checked>
-              <label class="form-check-label" for="binja-checkbox">Binary Ninja</label>
+              Binary Ninja
             </a>
           </li>
           <li>
-            <a href="#" class="dropdown-item" data-value="option-ghidra">
+            <a href="#" class="dropdown-item service-checkbox-link" for="ghidra-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="ghidra" value="" id="ghidra-checkbox" checked>
-              <label class="form-check-label" for="ghidra-checkbox">Ghidra</label>
+              Ghidra
             </a>
           </li>
           <li>
-            <a href="#" class="dropdown-item" data-value="option-ida">
+            <a href="#" class="dropdown-item service-checkbox-link" for="ida-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="ida" value="" id="ida-checkbox" checked>
-              <label class="form-check-label" for="ida-checkbox">IDA</label>
+              IDA
             </a>
           </li>
           <li>
-            <a href="#" class="dropdown-item" data-value="option-reko">
+            <a href="#" class="dropdown-item service-checkbox-link" for="reko-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="reko" value="" id="reko-checkbox">
-              <label class="form-check-label" for="reko-checkbox">Reko</label>
+              Reko
             </a>
           </li>
           <li>
-            <a href="#" class="dropdown-item" data-value="option-retdec">
+            <a href="#" class="dropdown-item service-checkbox-link" for="retdec-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="retdec" value="" id="retdec-checkbox">
-              <label class="form-check-label" for="retdec-checkbox">RetDec</label>
+              RetDec
             </a>
           </li>
           <li>
-            <a href="#" class="dropdown-item" data-value="option-snowman">
+            <a href="#" class="dropdown-item service-checkbox-link" for="snowman-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="snowman" value="" id="snowman-checkbox">
-              <label class="form-check-label" for="snowman-checkbox">Snowman</label>
+              Snowman
             </a>
           </li>
         </ul>
@@ -206,6 +206,16 @@ body {
         col.hide();
       }
     }
+
+    $('.service-checkbox-link').click(function(event) {
+      let chk = $('#' + $(this).attr('for'));
+      chk.prop('checked', !chk.is(':checked'));
+      show_or_hide_col_for_checkbox(chk);
+    });
+
+    $('.service-checkbox').click(function(event) {
+      event.stopPropagation();
+    });
 
     $('.service-checkbox').change(function() {
       show_or_hide_col_for_checkbox($(this));
