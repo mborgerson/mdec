@@ -14,8 +14,12 @@ class Service:
     def __init__(self):
         self.app = web.Application()
         self.app.add_routes([web.post('/decompile', self.post_decompile)])
+        self.app.add_routes([web.get('/version', self.get_version)])
 
     def decompile(self, path: str) -> str:
+        raise NotImplementedError()
+
+    def version(self) -> str:
         raise NotImplementedError()
 
     async def post_decompile(self, request: aiohttp.web.BaseRequest) -> web.Response:
@@ -40,6 +44,15 @@ class Service:
                 resp_status = 500
 
             return web.Response(text=decomp, status=resp_status)
+
+    async def get_version(self, request: aiohttp.web.BaseRequest) -> web.Response:
+        try:
+            version = self.version()
+            resp_status = 200
+        except:
+            version = traceback.format_exc()
+            resp_status = 500
+        return web.Response(text=version, status=resp_status)
 
 
 def mdec_main(service: Service):

@@ -38,3 +38,6 @@ class AngrService(Service):
                 out.append('/* Decompilation of %s failed:\n%s\n*/' % (func, traceback.format_exc()))
 
         return '\n'.join(out)
+
+    def version(self) -> str:
+        return '.'.join(str(i) for i in angr.__version__)

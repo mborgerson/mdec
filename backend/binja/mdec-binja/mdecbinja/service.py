@@ -32,3 +32,6 @@ class BinjaService(Service):
             for line in (first + last):
                 out.append(str(line))
         return '\n'.join(out)
+
+    def version(self) -> str:
+        return core_version()

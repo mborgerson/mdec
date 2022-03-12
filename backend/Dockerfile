@@ -60,6 +60,7 @@ RUN echo "${GHIDRA_SHA256}  $(basename ${GHIDRA_URL})" | sha256sum -c - \
  && mv /opt/ghidra/* /tmp/ghidra \
  && mv /tmp/ghidra/* /opt/ghidra
 COPY ghidra/dump.py /opt/ghidra/dump.py
+COPY ghidra/version.py /opt/ghidra/version.py
 
 COPY common/mdec-base /mdec-base
 COPY ghidra/mdec-ghidra /mdec-ghidra
@@ -80,6 +81,7 @@ COPY ida/private/ida_latest.tar.bz2 .
 RUN tar xf ida_latest.tar.bz2 && rm ida_latest.tar.bz2
 RUN /opt/ida/install_dependencies_64bit.sh
 COPY ida/decompile_all.py .
+COPY ida/version.py .
 
 WORKDIR /root
 COPY ida/private/license_stuff.tgz .
