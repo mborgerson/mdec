@@ -2,12 +2,11 @@
 # Base
 #
 FROM ubuntu:20.04 as base
+
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -qy python3 python3-pip
 COPY common/mdec-base /mdec-base
-RUN pip install /mdec-base \
- && rm -rf /mdec-base
 
 #
 # angr
@@ -15,8 +14,8 @@ RUN pip install /mdec-base \
 FROM base as angr
 
 COPY angr/mdec-angr /mdec-angr
-RUN pip install /mdec-angr
-RUN rm -rf /mdec-angr
+RUN pip install /mdec-base /mdec-angr \
+ && rm -rf /mdec-base /mdec-angr
 
 CMD ["python3", "-m", "mdecangr"]
 
@@ -24,6 +23,7 @@ CMD ["python3", "-m", "mdecangr"]
 # Binary Ninja
 #
 FROM base as binja
+
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy unzip libdbus-1-3
 
@@ -36,8 +36,8 @@ COPY binja/private/license.txt .
 RUN ./scripts/install_api.py
 
 COPY binja/mdec-binja /mdec-binja
-RUN pip install /mdec-binja \
- && rm -rf /mdec-binja
+RUN pip install /mdec-base /mdec-binja \
+ && rm -rf /mdec-base /mdec-binja
 
 CMD ["python3", "-m", "mdecbinja"]
 
@@ -45,6 +45,7 @@ CMD ["python3", "-m", "mdecbinja"]
 # Ghidra
 #
 FROM base as ghidra
+
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy unzip default-jdk wget
 
@@ -57,12 +58,11 @@ RUN echo "${GHIDRA_SHA256}  $(basename ${GHIDRA_URL})" | sha256sum -c - \
  && rm $(basename ${GHIDRA_URL}) \
  && mv /opt/ghidra/* /tmp/ghidra \
  && mv /tmp/ghidra/* /opt/ghidra
+COPY ghidra/dump.py /opt/ghidra/dump.py
 
 COPY ghidra/mdec-ghidra /mdec-ghidra
-RUN pip install /mdec-ghidra \
- && rm -rf /mdec-ghidra
-
-COPY ghidra/dump.py /opt/ghidra/dump.py
+RUN pip install /mdec-base /mdec-ghidra \
+ && rm -rf /mdec-base /mdec-ghidra
 
 CMD ["python3", "-m", "mdecghidra"]
 
@@ -70,6 +70,7 @@ CMD ["python3", "-m", "mdecghidra"]
 # IDA
 #
 FROM base as ida
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /opt/ida
@@ -83,8 +84,8 @@ COPY ida/private/license_stuff.tgz .
 RUN tar xf license_stuff.tgz
 
 COPY ida/mdec-ida /mdec-ida
-RUN pip install /mdec-ida \
- && rm -rf /mdec-ida
+RUN pip install /mdec-base /mdec-ida \
+ && rm -rf /mdec-base /mdec-ida
 
 CMD ["python3", "-m", "mdecida"]
 
@@ -92,6 +93,7 @@ CMD ["python3", "-m", "mdecida"]
 # Reko
 #
 FROM base as reko
+
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy wget apt-transport-https build-essential gcc g++ cmake libcapstone-dev pkg-config p7zip-full git unzip
 
@@ -110,16 +112,16 @@ RUN unzip /reko/src/../bin/CmdLine-0.10.1-426370bf67.zip \
  && rm -rf /reko
 
 COPY reko/mdec-reko /mdec-reko
-RUN pip install /mdec-reko \
- && rm -rf /mdec-reko
+RUN pip install /mdec-base /mdec-reko \
+ && rm -rf /mdec-base /mdec-reko
 
 CMD ["python3", "-m", "mdecreko"]
 
 #
 # RetDec
 #
-
 FROM base as retdec
+
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /opt/
 RUN apt-get install -qy wget
@@ -129,8 +131,8 @@ RUN tar xvf $(basename ${RETDEC_URL}) \
  && rm $(basename ${RETDEC_URL})
 
 COPY retdec/mdec-retdec /mdec-retdec
-RUN pip install /mdec-retdec \
- && rm -rf /mdec-retdec
+RUN pip install /mdec-base /mdec-retdec \
+ && rm -rf /mdec-base /mdec-retdec
 
 CMD ["python3", "-m", "mdecretdec"]
 
@@ -138,6 +140,7 @@ CMD ["python3", "-m", "mdecretdec"]
 # Snowman
 #
 FROM base as snowman
+
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -qy  build-essential cmake libboost-dev qt5-default git
@@ -151,7 +154,7 @@ RUN cd /tmp \
  && cd / && rm -rf /tmp/snowman
 
 COPY snowman/mdec-snowman /mdec-snowman
-RUN pip install /mdec-snowman \
- && rm -rf /mdec-snowman
+RUN pip install /mdec-base /mdec-snowman \
+ && rm -rf /mdec-base /mdec-snowman
 
 CMD ["python3", "-m", "mdecsnowman"]
