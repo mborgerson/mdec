@@ -9,6 +9,6 @@ setup(name='mdec-angr',
 	  version=__version__,
 	  description='mdec-angr',
 	  packages=['mdecangr'],
-	  install_requires=['aiohttp', 'angr'],
+	  install_requires=['mdec-base', 'angr'],
 	  python_requires='>=3.6'
 	  )

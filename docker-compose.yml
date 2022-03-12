@@ -15,19 +15,23 @@ services:
 
   angr:
     build:
-      context: backend/angr
+      context: backend
+      target: angr
 
   binja:
     build:
-      context: backend/binja
+      context: backend
+      target: binja
 
   ghidra:
     build:
-      context: backend/ghidra
+      context: backend
+      target: ghidra
 
   ida:
     build:
-      context: backend/ida
+      context: backend
+      target: ida
 
 volumes:
   nginx_logs:

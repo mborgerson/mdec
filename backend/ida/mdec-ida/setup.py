@@ -9,6 +9,6 @@ setup(name='mdec-ida',
 	  version=__version__,
 	  description='mdec-ida',
 	  packages=['mdecida'],
-	  install_requires=['aiohttp'],
+	  install_requires=['mdec-base'],
 	  python_requires='>=3.6'
 	  )

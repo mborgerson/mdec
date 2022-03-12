@@ -9,6 +9,6 @@ setup(name='mdec-ghidra',
 	  version=__version__,
 	  description='mdec-ghidra',
 	  packages=['mdecghidra'],
-	  install_requires=['aiohttp'],
+	  install_requires=['mdec-base'],
 	  python_requires='>=3.6'
 	  )
