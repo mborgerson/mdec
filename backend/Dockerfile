@@ -6,13 +6,13 @@ FROM ubuntu:20.04 as base
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -qy python3 python3-pip
-COPY common/mdec-base /mdec-base
 
 #
 # angr
 #
 FROM base as angr
 
+COPY common/mdec-base /mdec-base
 COPY angr/mdec-angr /mdec-angr
 RUN pip install /mdec-base /mdec-angr \
  && rm -rf /mdec-base /mdec-angr
@@ -35,6 +35,7 @@ WORKDIR /opt/binaryninja
 COPY binja/private/license.txt .
 RUN ./scripts/install_api.py
 
+COPY common/mdec-base /mdec-base
 COPY binja/mdec-binja /mdec-binja
 RUN pip install /mdec-base /mdec-binja \
  && rm -rf /mdec-base /mdec-binja
@@ -60,6 +61,7 @@ RUN echo "${GHIDRA_SHA256}  $(basename ${GHIDRA_URL})" | sha256sum -c - \
  && mv /tmp/ghidra/* /opt/ghidra
 COPY ghidra/dump.py /opt/ghidra/dump.py
 
+COPY common/mdec-base /mdec-base
 COPY ghidra/mdec-ghidra /mdec-ghidra
 RUN pip install /mdec-base /mdec-ghidra \
  && rm -rf /mdec-base /mdec-ghidra
@@ -83,6 +85,7 @@ WORKDIR /root
 COPY ida/private/license_stuff.tgz .
 RUN tar xf license_stuff.tgz
 
+COPY common/mdec-base /mdec-base
 COPY ida/mdec-ida /mdec-ida
 RUN pip install /mdec-base /mdec-ida \
  && rm -rf /mdec-base /mdec-ida
@@ -111,6 +114,7 @@ WORKDIR /opt/reko
 RUN unzip /reko/src/../bin/CmdLine-0.10.1-426370bf67.zip \
  && rm -rf /reko
 
+COPY common/mdec-base /mdec-base
 COPY reko/mdec-reko /mdec-reko
 RUN pip install /mdec-base /mdec-reko \
  && rm -rf /mdec-base /mdec-reko
@@ -130,6 +134,7 @@ RUN wget -nv ${RETDEC_URL}
 RUN tar xvf $(basename ${RETDEC_URL}) \
  && rm $(basename ${RETDEC_URL})
 
+COPY common/mdec-base /mdec-base
 COPY retdec/mdec-retdec /mdec-retdec
 RUN pip install /mdec-base /mdec-retdec \
  && rm -rf /mdec-base /mdec-retdec
@@ -153,6 +158,7 @@ RUN cd /tmp \
  && make -j$(nproc) install \
  && cd / && rm -rf /tmp/snowman
 
+COPY common/mdec-base /mdec-base
 COPY snowman/mdec-snowman /mdec-snowman
 RUN pip install /mdec-base /mdec-snowman \
  && rm -rf /mdec-base /mdec-snowman
