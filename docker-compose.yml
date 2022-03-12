@@ -33,6 +33,11 @@ services:
       context: backend
       target: ida
 
+  reko:
+    build:
+      context: backend
+      target: reko
+
   retdec:
     build:
       context: backend

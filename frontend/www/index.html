@@ -115,6 +115,12 @@ body {
             </a>
           </li>
           <li>
+            <a href="#" class="dropdown-item" data-value="option-reko">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="reko" value="" id="reko-checkbox">
+              <label class="form-check-label" for="reko-checkbox">Reko</label>
+            </a>
+          </li>
+          <li>
             <a href="#" class="dropdown-item" data-value="option-retdec">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="retdec" value="" id="retdec-checkbox">
               <label class="form-check-label" for="retdec-checkbox">RetDec</label>
@@ -138,6 +144,7 @@ body {
     <div class="editor-col" id="binja-col"><h3>Binary Ninja</h3><div class="editor" id="binja-editor"></div></div>
     <div class="editor-col" id="ghidra-col"><h3>Ghidra</h3><div class="editor" id="ghidra-editor"></div></div>
     <div class="editor-col" id="ida-col"><h3>IDA</h3><div class="editor" id="ida-editor"></div></div>
+    <div class="editor-col" id="reko-col"><h3>Reko</h3><div class="editor" id="reko-editor"></div></div>
     <div class="editor-col" id="retdec-col"><h3>RetDec</h3><div class="editor" id="retdec-editor"></div></div>
     <div class="editor-col" id="snowman-col"><h3>Snowman</h3><div class="editor" id="snowman-editor"></div></div>
   </div>
@@ -153,7 +160,7 @@ body {
 
 <script type="text/javascript">
 
-    var services = ['angr', 'binja', 'ghidra', 'ida', 'retdec', 'snowman'];
+    var services = ['angr', 'binja', 'ghidra', 'ida', 'reko', 'retdec', 'snowman'];
     var editors = {};
     var options = [];
 

@@ -89,6 +89,33 @@ RUN pip install /mdec-ida \
 CMD ["python3", "-m", "mdecida"]
 
 #
+# Reko
+#
+FROM base as reko
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -qy wget apt-transport-https build-essential gcc g++ cmake libcapstone-dev pkg-config p7zip-full git unzip
+
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
+RUN apt-get update
+RUN apt-get install -qy dotnet-sdk-5.0
+
+RUN git clone --depth=1 https://github.com/uxmal/reko
+RUN cd reko \
+ && dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj \
+ && dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj \
+ && dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+WORKDIR /opt/reko
+RUN unzip /reko/src/../bin/CmdLine-0.11.0-5a37a1ed21.zip \
+ && rm -rf /reko
+
+COPY reko/mdec-reko /mdec-reko
+RUN pip install /mdec-reko \
+ && rm -rf /mdec-reko
+
+CMD ["python3", "-m", "mdecreko"]
+
+#
 # RetDec
 #
 

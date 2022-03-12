@@ -11,6 +11,7 @@ Supported Decompilers
 * [Binary Ninja](https://binary.ninja/)
 * [Ghidra](https://ghidra-sre.org/)
 * [IDA](https://hex-rays.com/decompiler/)
+* [Reko](https://github.com/uxmal/reko)
 * [RetDec](https://github.com/avast/retdec)
 * [Snowman](https://github.com/yegord/snowman)
 
