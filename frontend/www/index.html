@@ -114,6 +114,12 @@ body {
               <label class="form-check-label" for="ida-checkbox">IDA</label>
             </a>
           </li>
+          <li>
+            <a href="#" class="dropdown-item" data-value="option-snowman">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="snowman" value="" id="snowman-checkbox">
+              <label class="form-check-label" for="snowman-checkbox">Snowman</label>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -126,6 +132,7 @@ body {
     <div class="editor-col" id="binja-col"><h3>Binary Ninja</h3><div class="editor" id="binja-editor"></div></div>
     <div class="editor-col" id="ghidra-col"><h3>Ghidra</h3><div class="editor" id="ghidra-editor"></div></div>
     <div class="editor-col" id="ida-col"><h3>IDA</h3><div class="editor" id="ida-editor"></div></div>
+    <div class="editor-col" id="snowman-col"><h3>Snowman</h3><div class="editor" id="snowman-editor"></div></div>
   </div>
 
   </div>
@@ -139,7 +146,7 @@ body {
 
 <script type="text/javascript">
 
-    var services = ['angr', 'binja', 'ghidra', 'ida'];
+    var services = ['angr', 'binja', 'ghidra', 'ida', 'snowman'];
     var editors = {};
     var options = [];
 

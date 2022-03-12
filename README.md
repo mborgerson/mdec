@@ -7,12 +7,13 @@ Explore multiple decompilers and compare their output with minimal effort. Uploa
 
 Supported Decompilers
 ---------------------
-* angr
-* Ghidra
-* IDA
-* Binary Ninja
+* [angr](https://angr.io/)
+* [Binary Ninja](https://binary.ninja/)
+* [Ghidra](https://ghidra-sre.org/)
+* [IDA](https://hex-rays.com/decompiler/)
+* [Snowman](https://github.com/yegord/snowman)
 
-**Note:** For IDA and Binary Ninja, you must provide license and binaries. angr and Ghidra will be downloaded automatically.
+**Note:** For IDA and Binary Ninja, you must provide license and binaries; other decompilers will be downloaded automatically.
 
 Components
 ----------

@@ -87,3 +87,25 @@ RUN pip install /mdec-ida \
  && rm -rf /mdec-ida
 
 CMD ["python3", "-m", "mdecida"]
+
+#
+# Snowman
+#
+FROM base as snowman
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -qy  build-essential cmake libboost-dev qt5-default git
+
+RUN cd /tmp \
+ && git clone --depth=1 https://github.com/yegord/snowman.git \
+ && mkdir -p snowman/build \
+ && cd snowman/build \
+ && cmake -DCMAKE_INSTALL_PREFIX=/opt/snowman ../src \
+ && make -j$(nproc) install \
+ && cd / && rm -rf /tmp/snowman
+
+COPY snowman/mdec-snowman /mdec-snowman
+RUN pip install /mdec-snowman \
+ && rm -rf /mdec-snowman
+
+CMD ["python3", "-m", "mdecsnowman"]

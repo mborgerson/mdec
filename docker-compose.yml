@@ -33,5 +33,10 @@ services:
       context: backend
       target: ida
 
+  snowman:
+    build:
+      context: backend
+      target: snowman
+
 volumes:
   nginx_logs:
