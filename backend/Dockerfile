@@ -89,6 +89,25 @@ RUN pip install /mdec-ida \
 CMD ["python3", "-m", "mdecida"]
 
 #
+# RetDec
+#
+
+FROM base as retdec
+ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /opt/
+RUN apt-get install -qy wget
+ENV RETDEC_URL=https://retdec-tc.avast.com/repository/download/RetDec_LinuxBuild/.lastSuccessful/package/retdec-master-linux-64b.tar.xz?guest=1
+RUN wget -nv ${RETDEC_URL}
+RUN tar xvf $(basename ${RETDEC_URL}) \
+ && rm $(basename ${RETDEC_URL})
+
+COPY retdec/mdec-retdec /mdec-retdec
+RUN pip install /mdec-retdec \
+ && rm -rf /mdec-retdec
+
+CMD ["python3", "-m", "mdecretdec"]
+
+#
 # Snowman
 #
 FROM base as snowman

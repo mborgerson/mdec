@@ -33,6 +33,11 @@ services:
       context: backend
       target: ida
 
+  retdec:
+    build:
+      context: backend
+      target: retdec
+
   snowman:
     build:
       context: backend
