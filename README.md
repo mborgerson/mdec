@@ -23,7 +23,7 @@ Install
 -------
 You'll need to add your proprietary packages in `backend/*/private`. Then just:
 ```
-docker compose build
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build
 ```
 
 Run
