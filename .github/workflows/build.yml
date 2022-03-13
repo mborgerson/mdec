@@ -20,3 +20,15 @@ jobs:
           reko \
           retdec \
           snowman
+    - name: Test
+      run: |
+        docker compose up --detach \
+          frontend \
+          angr \
+          ghidra \
+          reko \
+          retdec \
+          snowman
+        python3 -m pip install requests
+        python3 -m unittest tests/test.py
+        docker compose down
