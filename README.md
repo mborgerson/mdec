@@ -29,6 +29,8 @@ You'll need to add your proprietary packages in `backend/*/private`. Then just:
 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build
 ```
 
+**Tip:** If you want to build only a few services, append the service names to the above command (e.g. frontend, angr, etc.)
+
 Run
 ---
 ```
@@ -36,6 +38,8 @@ docker compose up
 ```
 
 Point your browser at http://127.0.0.1.
+
+**Tip:** If you want to start only a few services, append the service names to the above command (e.g. frontend, angr, etc.)
 
 API
 ---
