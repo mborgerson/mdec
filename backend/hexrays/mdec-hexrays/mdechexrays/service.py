@@ -6,9 +6,9 @@ from pathlib import Path
 from mdecbase import Service
 
 
-class IdaService(Service):
+class HexraysService(Service):
     """
-    IDA decompiler as a service
+    Hex-Rays decompiler as a service
     """
 
     def decompile(self, path: str) -> str:
@@ -16,7 +16,7 @@ class IdaService(Service):
         Decompile all the functions in the binary located at `path`.
         """
         logpath = os.path.join(os.getcwd(), 'ida.log')
-        subprocess.run(['/opt/ida/idat64', '-A', '-S/opt/ida/decompile_all.py', '-L'+logpath, path])
+        subprocess.run(['/opt/hexrays/idat64', '-A', '-S/opt/hexrays/decompile_all.py', '-L'+logpath, path])
         try:
             outpath = os.path.join(os.path.dirname(path), 'out.c')
             return open(outpath).read()
@@ -31,8 +31,8 @@ class IdaService(Service):
             dummy_path = Path(tmp) / 'dummy'
             with open(dummy_path, 'wb') as dummy_file:
                 dummy_file.write(b'\x00' * 256)
-                subprocess.run(['/opt/ida/idat64', '-A', '-a',
-                                '-S/opt/ida/version.py', '-L'+logpath, str(dummy_path)])
+                subprocess.run(['/opt/hexrays/idat64', '-A', '-a',
+                                '-S/opt/hexrays/version.py', '-L'+logpath, str(dummy_path)])
             try:
                 return open(dummy_path.parent / 'version.txt').read().strip()
             except:

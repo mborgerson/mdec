@@ -70,29 +70,29 @@ RUN pip install /mdec-base /mdec-ghidra \
 CMD ["python3", "-m", "mdecghidra"]
 
 #
-# IDA
+# Hex-Rays Decompiler
 #
-FROM base as ida
+FROM base as hexrays
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /opt/ida
-COPY ida/private/ida_latest.tar.bz2 .
+WORKDIR /opt/hexrays
+COPY hexrays/private/ida_latest.tar.bz2 .
 RUN tar xf ida_latest.tar.bz2 && rm ida_latest.tar.bz2
-RUN /opt/ida/install_dependencies_64bit.sh
-COPY ida/decompile_all.py .
-COPY ida/version.py .
+RUN /opt/hexrays/install_dependencies_64bit.sh
+COPY hexrays/decompile_all.py .
+COPY hexrays/version.py .
 
 WORKDIR /root
-COPY ida/private/license_stuff.tgz .
+COPY hexrays/private/license_stuff.tgz .
 RUN tar xf license_stuff.tgz
 
 COPY common/mdec-base /mdec-base
-COPY ida/mdec-ida /mdec-ida
-RUN pip install /mdec-base /mdec-ida \
- && rm -rf /mdec-base /mdec-ida
+COPY hexrays/mdec-hexrays /mdec-hexrays
+RUN pip install /mdec-base /mdec-hexrays \
+ && rm -rf /mdec-base /mdec-hexrays
 
-CMD ["python3", "-m", "mdecida"]
+CMD ["python3", "-m", "mdechexrays"]
 
 #
 # Reko
