@@ -10,12 +10,12 @@ Supported Decompilers
 * [angr](https://angr.io/)
 * [Binary Ninja](https://binary.ninja/)
 * [Ghidra](https://ghidra-sre.org/)
-* [IDA](https://hex-rays.com/decompiler/)
+* [Hex-Rays](https://hex-rays.com/decompiler/)
 * [Reko](https://github.com/uxmal/reko)
 * [RetDec](https://github.com/avast/retdec)
 * [Snowman](https://github.com/yegord/snowman)
 
-**Note:** For IDA and Binary Ninja, you must provide license and binaries; other decompilers will be downloaded automatically.
+**Note:** For Hex-Rays and Binary Ninja, you must provide license and binaries; other decompilers will be downloaded automatically.
 
 Components
 ----------
@@ -45,6 +45,6 @@ API
 ---
 You can also request decomp like:
 ```
-curl -F 'file=@test.o' http://127.0.0.1/ida/decompile
+curl -F 'file=@test.o' http://127.0.0.1/hexrays/decompile
 ```
 

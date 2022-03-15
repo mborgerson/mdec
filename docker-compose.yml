@@ -28,10 +28,10 @@ services:
       context: backend
       target: ghidra
 
-  ida:
+  hexrays:
     build:
       context: backend
-      target: ida
+      target: hexrays
 
   reko:
     build:
