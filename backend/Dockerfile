@@ -107,13 +107,13 @@ RUN dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
 RUN apt-get update
 RUN apt-get install -qy dotnet-sdk-5.0
 
-RUN git clone --depth=1 https://github.com/uxmal/reko -b version-0.10.1
+RUN git clone --depth=1 https://github.com/uxmal/reko -b version-0.11.0
 RUN cd reko \
  && dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj \
  && dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj \
  && dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
 WORKDIR /opt/reko
-RUN unzip /reko/src/../bin/CmdLine-0.10.1-426370bf67.zip \
+RUN unzip /reko/src/../bin/CmdLine-*.zip \
  && rm -rf /reko
 
 COPY common/mdec-base /mdec-base
