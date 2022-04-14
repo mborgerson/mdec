@@ -48,5 +48,10 @@ services:
       context: backend
       target: snowman
 
+  r2dec:
+    build:
+      context: backend
+      target: r2dec
+
 volumes:
   nginx_logs:

@@ -138,6 +138,12 @@ body {
               Snowman
             </a>
           </li>
+          <li>
+            <a href="#" class="dropdown-item service-checkbox-link" for="r2dec-checkbox">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="r2dec" value="" id="r2dec-checkbox">
+              r2dec
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -153,6 +159,7 @@ body {
     <div class="editor-col" id="reko-col"><h3>Reko</h3><div class="version" id="reko-version"></div><div class="editor" id="reko-editor"></div></div>
     <div class="editor-col" id="retdec-col"><h3>RetDec</h3><div class="version" id="retdec-version"></div><div class="editor" id="retdec-editor"></div></div>
     <div class="editor-col" id="snowman-col"><h3>Snowman</h3><div class="version" id="snowman-version"></div><div class="editor" id="snowman-editor"></div></div>
+    <div class="editor-col" id="r2dec-col"><h3>r2dec</h3><div class="version" id="r2dec-version"></div><div class="editor" id="r2dec-editor"></div></div>
   </div>
 
   </div>
@@ -166,7 +173,7 @@ body {
 
 <script type="text/javascript">
 
-    var services = ['angr', 'binja', 'ghidra', 'hexrays', 'reko', 'retdec', 'snowman'];
+    var services = ['angr', 'binja', 'ghidra', 'hexrays', 'reko', 'retdec', 'snowman', 'r2dec'];
     var editors = {};
     var version_boxes = {};
     var options = [];
