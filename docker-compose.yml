@@ -18,20 +18,20 @@ services:
       context: backend
       target: angr
 
-        #  binja:
-        #    build:
-        #      context: backend
-        #      target: binja
+  binja:
+    build:
+      context: backend
+      target: binja
 
   ghidra:
     build:
       context: backend
       target: ghidra
 
-        #  hexrays:
-        #    build:
-        #      context: backend
-        #      target: hexrays
+  hexrays:
+    build:
+      context: backend
+      target: hexrays
 
   reko:
     build:
