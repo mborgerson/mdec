@@ -95,6 +95,30 @@ RUN pip install /mdec-base /mdec-hexrays \
 CMD ["python3", "-m", "mdechexrays"]
 
 #
+# r2dec
+#
+FROM base as r2dec
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -qy  build-essential cmake git
+
+RUN cd /root \
+ && git clone https://github.com/radareorg/radare2 \
+ && cd radare2 \
+ && ./sys/install.sh \
+ && r2pm init \
+ && ln -sf /usr/bin/python3 /usr/bin/python \
+ && r2pm -ci r2dec
+
+COPY common/mdec-base /mdec-base
+COPY r2dec/mdec-r2dec /mdec-r2dec
+RUN pip install /mdec-base /mdec-r2dec \
+ && rm -rf /mdec-base /mdec-r2dec
+
+CMD ["python3", "-m", "mdecr2dec"]
+
+#
 # Reko
 #
 FROM base as reko
@@ -166,27 +190,3 @@ RUN pip install /mdec-base /mdec-snowman \
  && rm -rf /mdec-base /mdec-snowman
 
 CMD ["python3", "-m", "mdecsnowman"]
-
-#
-# r2dec
-#
-FROM base as r2dec
-
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
- && apt-get install -qy  build-essential cmake git
-
-RUN cd /root \
- && git clone https://github.com/radareorg/radare2 \
- && cd radare2 \
- && ./sys/install.sh \
- && r2pm init \
- && ln -sf /usr/bin/python3 /usr/bin/python \
- && r2pm -ci r2dec
-
-COPY common/mdec-base /mdec-base
-COPY r2dec/mdec-r2dec /mdec-r2dec
-RUN pip install /mdec-base /mdec-r2dec \
- && rm -rf /mdec-base /mdec-r2dec
-
-CMD ["python3", "-m", "mdecr2dec"]
