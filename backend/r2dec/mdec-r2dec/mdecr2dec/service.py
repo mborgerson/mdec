@@ -22,7 +22,7 @@ class R2decService(Service):
         for func in funcs:
             try:
                 dec = r2.cmd(f'pdd @{func}')
-                out.append(dec) 
+                out.append(dec.replace('/* r2dec pseudo code output */\n', '')) 
             except:
                 out.append(f'/* Decompilation of {func} failed:\n{traceback.format_exc()}\n*/')
 
