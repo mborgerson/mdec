@@ -29,7 +29,7 @@ class R2decService(Service):
                 out.append(f'/* Decompilation of {func} failed:\n{traceback.format_exc()}\n*/')
 
 
-        return '\n'.join(includes) + '\n'.join(out)
+        return '\n'.join(includes) + '\n' + '\n'.join(out)
 
     def version(self) -> str:
         return subprocess.run(['/usr/local/bin/r2', '-v'], stdout=subprocess.PIPE).stdout.splitlines()[0].split()[1].decode('utf-8', 'ignore')
