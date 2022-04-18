@@ -104,7 +104,7 @@ RUN apt-get update \
  && apt-get install -qy  build-essential cmake git
 
 RUN cd /root \
- && git clone https://github.com/radareorg/radare2 \
+ && git clone --depth=1 https://github.com/radareorg/radare2 \
  && cd radare2 \
  && ./sys/install.sh \
  && r2pm init \
