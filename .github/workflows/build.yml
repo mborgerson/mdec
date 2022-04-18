@@ -17,6 +17,7 @@ jobs:
           frontend \
           angr \
           ghidra \
+          r2dec \
           reko \
           retdec \
           snowman
@@ -26,6 +27,7 @@ jobs:
           frontend \
           angr \
           ghidra \
+          r2dec \
           reko \
           retdec \
           snowman

@@ -33,6 +33,11 @@ services:
       context: backend
       target: hexrays
 
+  r2dec:
+    build:
+      context: backend
+      target: r2dec
+
   reko:
     build:
       context: backend
