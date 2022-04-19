@@ -38,6 +38,11 @@ services:
       context: backend
       target: r2dec
 
+  r2ghidra:
+    build:
+      context: backend
+      target: r2ghidra
+
   reko:
     build:
       context: backend

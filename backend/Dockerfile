@@ -100,8 +100,7 @@ CMD ["python3", "-m", "mdechexrays"]
 FROM base as r2dec
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
- && apt-get install -qy  build-essential cmake git
+RUN apt-get install -qy  build-essential cmake git
 
 RUN cd /root \
  && git clone --depth=1 https://github.com/radareorg/radare2 \
@@ -117,6 +116,29 @@ RUN pip install /mdec-base /mdec-r2dec \
  && rm -rf /mdec-base /mdec-r2dec
 
 CMD ["python3", "-m", "mdecr2dec"]
+
+#
+# r2ghidra
+#
+FROM base as r2ghidra
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -qy  build-essential cmake git wget pkg-config meson unzip
+
+RUN cd /root \
+ && git clone --depth=1 https://github.com/radareorg/radare2 \
+ && cd radare2 \
+ && ./sys/install.sh \
+ && r2pm init \
+ && ln -sf /usr/bin/python3 /usr/bin/python \
+ && r2pm -ci r2ghidra
+
+COPY common/mdec-base /mdec-base
+COPY r2ghidra/mdec-r2ghidra /mdec-r2ghidra
+RUN pip install /mdec-base /mdec-r2ghidra \
+ && rm -rf /mdec-base /mdec-r2ghidra
+
+CMD ["python3", "-m", "mdecr2ghidra"]
 
 #
 # Reko
