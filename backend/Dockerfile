@@ -7,6 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -qy python3 python3-pip
 
+RUN useradd -m --uid 1000 mdec && echo mdec:d094308474f96d721996e87717e6b3be | chpasswd
+
 #
 # angr
 #
@@ -17,6 +19,7 @@ COPY angr/mdec-angr /mdec-angr
 RUN pip install /mdec-base /mdec-angr \
  && rm -rf /mdec-base /mdec-angr
 
+USER mdec
 CMD ["python3", "-m", "mdecangr"]
 
 #
@@ -40,6 +43,7 @@ COPY binja/mdec-binja /mdec-binja
 RUN pip install /mdec-base /mdec-binja \
  && rm -rf /mdec-base /mdec-binja
 
+USER mdec
 CMD ["python3", "-m", "mdecbinja"]
 
 #
@@ -67,6 +71,7 @@ COPY ghidra/mdec-ghidra /mdec-ghidra
 RUN pip install /mdec-base /mdec-ghidra \
  && rm -rf /mdec-base /mdec-ghidra
 
+USER mdec
 CMD ["python3", "-m", "mdecghidra"]
 
 #
@@ -92,6 +97,7 @@ COPY hexrays/mdec-hexrays /mdec-hexrays
 RUN pip install /mdec-base /mdec-hexrays \
  && rm -rf /mdec-base /mdec-hexrays
 
+USER mdec
 CMD ["python3", "-m", "mdechexrays"]
 
 #
@@ -102,20 +108,26 @@ FROM base as r2dec
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -qy  build-essential cmake git
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
-RUN cd /root \
+USER mdec
+
+RUN cd /home/mdec \
  && git clone --depth=1 https://github.com/radareorg/radare2 \
  && cd radare2 \
- && ./sys/install.sh \
+ && ./sys/user.sh \
+ && export PATH=$PATH:/home/mdec/bin \
  && r2pm init \
- && ln -sf /usr/bin/python3 /usr/bin/python \
  && r2pm -ci r2dec
 
+USER root
 COPY common/mdec-base /mdec-base
 COPY r2dec/mdec-r2dec /mdec-r2dec
 RUN pip install /mdec-base /mdec-r2dec \
  && rm -rf /mdec-base /mdec-r2dec
 
+USER mdec
+ENV PATH=$PATH:/home/mdec/bin
 CMD ["python3", "-m", "mdecr2dec"]
 
 #
@@ -145,6 +157,7 @@ COPY reko/mdec-reko /mdec-reko
 RUN pip install /mdec-base /mdec-reko \
  && rm -rf /mdec-base /mdec-reko
 
+USER mdec
 CMD ["python3", "-m", "mdecreko"]
 
 #
@@ -165,6 +178,7 @@ COPY retdec/mdec-retdec /mdec-retdec
 RUN pip install /mdec-base /mdec-retdec \
  && rm -rf /mdec-base /mdec-retdec
 
+USER mdec
 CMD ["python3", "-m", "mdecretdec"]
 
 #
@@ -189,4 +203,5 @@ COPY snowman/mdec-snowman /mdec-snowman
 RUN pip install /mdec-base /mdec-snowman \
  && rm -rf /mdec-base /mdec-snowman
 
+USER mdec
 CMD ["python3", "-m", "mdecsnowman"]
