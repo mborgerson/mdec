@@ -36,7 +36,7 @@ RUN unzip BinaryNinja-dev.zip
 RUN rm BinaryNinja-dev.zip
 WORKDIR /opt/binaryninja
 COPY binja/private/license.txt .
-RUN ./scripts/install_api.py
+RUN ./scripts/install_api.py root
 
 COPY common/mdec-base /mdec-base
 COPY binja/mdec-binja /mdec-binja
@@ -88,16 +88,15 @@ RUN /opt/hexrays/install_dependencies_64bit.sh
 COPY hexrays/decompile_all.py .
 COPY hexrays/version.py .
 
-WORKDIR /root
-COPY hexrays/private/license_stuff.tgz .
-RUN tar xf license_stuff.tgz
-
 COPY common/mdec-base /mdec-base
 COPY hexrays/mdec-hexrays /mdec-hexrays
 RUN pip install /mdec-base /mdec-hexrays \
  && rm -rf /mdec-base /mdec-hexrays
 
 USER mdec
+WORKDIR /home/mdec
+COPY hexrays/private/license_stuff.tgz .
+RUN tar xf license_stuff.tgz
 CMD ["python3", "-m", "mdechexrays"]
 
 #
