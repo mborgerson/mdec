@@ -54,8 +54,8 @@ FROM base as ghidra
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy unzip default-jdk wget
 
-ENV GHIDRA_URL https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.1.2_build/ghidra_10.1.2_PUBLIC_20220125.zip
-ENV GHIDRA_SHA256 ac96fbdde7f754e0eb9ed51db020e77208cdb12cf58c08657a2ab87cb2694940
+ENV GHIDRA_URL https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.1.3_build/ghidra_10.1.3_PUBLIC_20220421.zip
+ENV GHIDRA_SHA256 9c73b6657413686c0af85909c20581e764107add2a789038ebc6eca49dc4e812
 WORKDIR /opt/ghidra
 RUN wget -nv ${GHIDRA_URL}
 RUN echo "${GHIDRA_SHA256}  $(basename ${GHIDRA_URL})" | sha256sum -c - \
