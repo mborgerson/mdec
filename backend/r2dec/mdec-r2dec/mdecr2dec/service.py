@@ -32,5 +32,5 @@ class R2decService(Service):
         return '\n'.join(includes) + '\n' + '\n'.join(out)
 
     def version(self) -> str:
-        return subprocess.run(['/usr/local/bin/r2', '-v'], stdout=subprocess.PIPE).stdout.splitlines()[0].split()[1].decode('utf-8', 'ignore')
+        return subprocess.run(['/home/mdec/bin/r2', '-v'], stdout=subprocess.PIPE).stdout.splitlines()[0].split()[1].decode('utf-8', 'ignore')
 

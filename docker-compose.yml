@@ -33,6 +33,11 @@ services:
       context: backend
       target: hexrays
 
+  jeb:
+    build:
+      context: backend
+      target: jeb
+
   r2dec:
     build:
       context: backend

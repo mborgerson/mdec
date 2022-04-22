@@ -7,6 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -qy python3 python3-pip
 
+RUN useradd -m --uid 1000 mdec && echo mdec:d094308474f96d721996e87717e6b3be | chpasswd
+
 #
 # angr
 #
@@ -17,6 +19,7 @@ COPY angr/mdec-angr /mdec-angr
 RUN pip install /mdec-base /mdec-angr \
  && rm -rf /mdec-base /mdec-angr
 
+USER mdec
 CMD ["python3", "-m", "mdecangr"]
 
 #
@@ -33,13 +36,14 @@ RUN unzip BinaryNinja-dev.zip
 RUN rm BinaryNinja-dev.zip
 WORKDIR /opt/binaryninja
 COPY binja/private/license.txt .
-RUN ./scripts/install_api.py
+RUN ./scripts/install_api.py root
 
 COPY common/mdec-base /mdec-base
 COPY binja/mdec-binja /mdec-binja
 RUN pip install /mdec-base /mdec-binja \
  && rm -rf /mdec-base /mdec-binja
 
+USER mdec
 CMD ["python3", "-m", "mdecbinja"]
 
 #
@@ -50,8 +54,8 @@ FROM base as ghidra
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy unzip default-jdk wget
 
-ENV GHIDRA_URL https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.1.2_build/ghidra_10.1.2_PUBLIC_20220125.zip
-ENV GHIDRA_SHA256 ac96fbdde7f754e0eb9ed51db020e77208cdb12cf58c08657a2ab87cb2694940
+ENV GHIDRA_URL https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.1.3_build/ghidra_10.1.3_PUBLIC_20220421.zip
+ENV GHIDRA_SHA256 9c73b6657413686c0af85909c20581e764107add2a789038ebc6eca49dc4e812
 WORKDIR /opt/ghidra
 RUN wget -nv ${GHIDRA_URL}
 RUN echo "${GHIDRA_SHA256}  $(basename ${GHIDRA_URL})" | sha256sum -c - \
@@ -67,6 +71,7 @@ COPY ghidra/mdec-ghidra /mdec-ghidra
 RUN pip install /mdec-base /mdec-ghidra \
  && rm -rf /mdec-base /mdec-ghidra
 
+USER mdec
 CMD ["python3", "-m", "mdecghidra"]
 
 #
@@ -83,38 +88,69 @@ RUN /opt/hexrays/install_dependencies_64bit.sh
 COPY hexrays/decompile_all.py .
 COPY hexrays/version.py .
 
-WORKDIR /root
-COPY hexrays/private/license_stuff.tgz .
-RUN tar xf license_stuff.tgz
-
 COPY common/mdec-base /mdec-base
 COPY hexrays/mdec-hexrays /mdec-hexrays
 RUN pip install /mdec-base /mdec-hexrays \
  && rm -rf /mdec-base /mdec-hexrays
 
+USER mdec
+WORKDIR /home/mdec
+COPY hexrays/private/license_stuff.tgz .
+RUN tar xf license_stuff.tgz
 CMD ["python3", "-m", "mdechexrays"]
+
+#
+# JEB
+#
+FROM base as jeb
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -qy unzip default-jdk wget
+
+ENV JEB_URL https://www.pnfsoftware.com/dl?jeb4ce
+WORKDIR /opt/jeb
+RUN wget -O jeb.zip -nv ${JEB_URL}
+RUN unzip jeb.zip && rm jeb.zip
+
+COPY jeb/DecompileFile.py /opt/jeb
+
+COPY common/mdec-base /mdec-base
+COPY jeb/mdec-jeb /mdec-jeb
+RUN pip install /mdec-base /mdec-jeb \
+ && rm -rf /mdec-base /mdec-jeb
+
+COPY jeb/private/jeb-client.cfg /opt/jeb/bin/jeb-client.cfg
+RUN chown -R mdec:mdec /opt/jeb
+
+USER mdec
+CMD ["python3", "-m", "mdecjeb"]
 
 #
 # r2dec
 #
 FROM base as r2dec
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -qy  build-essential cmake git
+RUN apt-get update \
+ && apt-get install -qy  build-essential cmake git
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
-RUN cd /root \
+USER mdec
+
+RUN cd /home/mdec \
  && git clone --depth=1 https://github.com/radareorg/radare2 \
  && cd radare2 \
- && ./sys/install.sh \
+ && ./sys/user.sh \
+ && export PATH=$PATH:/home/mdec/bin \
  && r2pm init \
- && ln -sf /usr/bin/python3 /usr/bin/python \
  && r2pm -ci r2dec
 
+USER root
 COPY common/mdec-base /mdec-base
 COPY r2dec/mdec-r2dec /mdec-r2dec
 RUN pip install /mdec-base /mdec-r2dec \
  && rm -rf /mdec-base /mdec-r2dec
 
+USER mdec
+ENV PATH=$PATH:/home/mdec/bin
 CMD ["python3", "-m", "mdecr2dec"]
 
 #
@@ -167,6 +203,7 @@ COPY reko/mdec-reko /mdec-reko
 RUN pip install /mdec-base /mdec-reko \
  && rm -rf /mdec-base /mdec-reko
 
+USER mdec
 CMD ["python3", "-m", "mdecreko"]
 
 #
@@ -187,6 +224,7 @@ COPY retdec/mdec-retdec /mdec-retdec
 RUN pip install /mdec-base /mdec-retdec \
  && rm -rf /mdec-base /mdec-retdec
 
+USER mdec
 CMD ["python3", "-m", "mdecretdec"]
 
 #
@@ -211,4 +249,5 @@ COPY snowman/mdec-snowman /mdec-snowman
 RUN pip install /mdec-base /mdec-snowman \
  && rm -rf /mdec-base /mdec-snowman
 
+USER mdec
 CMD ["python3", "-m", "mdecsnowman"]
