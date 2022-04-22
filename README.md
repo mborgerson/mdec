@@ -11,6 +11,7 @@ Supported Decompilers
 * [Binary Ninja](https://binary.ninja/)
 * [Ghidra](https://ghidra-sre.org/)
 * [Hex-Rays](https://hex-rays.com/decompiler/)
+* [JEB CE](https://www.pnfsoftware.com/jeb/community-edition)
 * [r2dec](https://github.com/wargio/r2dec-js)
 * [Reko](https://github.com/uxmal/reko)
 * [RetDec](https://github.com/avast/retdec)
