@@ -129,8 +129,7 @@ CMD ["python3", "-m", "mdecjeb"]
 #
 FROM base as r2dec
 
-RUN apt-get update \
- && apt-get install -qy  build-essential cmake git
+RUN apt-get install -qy  build-essential cmake git
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 USER mdec
@@ -161,19 +160,23 @@ FROM base as r2ghidra
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy  build-essential cmake git wget pkg-config meson unzip
 
-RUN cd /root \
+RUN cd /home/mdec \
  && git clone --depth=1 https://github.com/radareorg/radare2 \
  && cd radare2 \
- && ./sys/install.sh \
+ && ./sys/user.sh \
+ && export PATH=$PATH:/home/mdec/bin \
  && r2pm init \
  && ln -sf /usr/bin/python3 /usr/bin/python \
  && r2pm -ci r2ghidra
 
+USER root
 COPY common/mdec-base /mdec-base
 COPY r2ghidra/mdec-r2ghidra /mdec-r2ghidra
 RUN pip install /mdec-base /mdec-r2ghidra \
  && rm -rf /mdec-base /mdec-r2ghidra
 
+USER mdec
+ENV PATH=$PATH:/home/mdec/bin
 CMD ["python3", "-m", "mdecr2ghidra"]
 
 #
