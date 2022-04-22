@@ -159,14 +159,15 @@ FROM base as r2ghidra
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -qy  build-essential cmake git wget pkg-config meson unzip
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
+USER mdec
 RUN cd /home/mdec \
  && git clone --depth=1 https://github.com/radareorg/radare2 \
  && cd radare2 \
  && ./sys/user.sh \
  && export PATH=$PATH:/home/mdec/bin \
  && r2pm init \
- && ln -sf /usr/bin/python3 /usr/bin/python \
  && r2pm -ci r2ghidra
 
 USER root
