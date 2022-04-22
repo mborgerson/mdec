@@ -100,6 +100,31 @@ RUN tar xf license_stuff.tgz
 CMD ["python3", "-m", "mdechexrays"]
 
 #
+# JEB
+#
+FROM base as jeb
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -qy unzip default-jdk wget
+
+ENV JEB_URL https://www.pnfsoftware.com/dl?jeb4ce
+WORKDIR /opt/jeb
+RUN wget -O jeb.zip -nv ${JEB_URL}
+RUN unzip jeb.zip && rm jeb.zip
+
+COPY jeb/DecompileFile.py /opt/jeb
+
+COPY common/mdec-base /mdec-base
+COPY jeb/mdec-jeb /mdec-jeb
+RUN pip install /mdec-base /mdec-jeb \
+ && rm -rf /mdec-base /mdec-jeb
+
+COPY jeb/private/jeb-client.cfg /opt/jeb/bin/jeb-client.cfg
+RUN chown -R mdec:mdec /opt/jeb
+
+USER mdec
+CMD ["python3", "-m", "mdecjeb"]
+
+#
 # r2dec
 #
 FROM base as r2dec
