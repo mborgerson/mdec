@@ -133,6 +133,12 @@ body {
             </a>
           </li>
           <li>
+            <a href="#" class="dropdown-item service-checkbox-link" for="r2ghidra-checkbox">
+              <input class="form-check-input service-checkbox" type="checkbox" data-value="r2ghidra" value="" id="r2ghidra-checkbox">
+              r2ghidra
+            </a>
+          </li>
+          <li>
             <a href="#" class="dropdown-item service-checkbox-link" for="reko-checkbox">
               <input class="form-check-input service-checkbox" type="checkbox" data-value="reko" value="" id="reko-checkbox">
               Reko
@@ -164,6 +170,7 @@ body {
     <div class="editor-col" id="hexrays-col"><h3>Hex-Rays</h3><div class="version" id="hexrays-version"></div><div class="editor" id="hexrays-editor"></div></div>
     <div class="editor-col" id="jeb-col"><h3>JEB</h3><div class="version" id="jeb-version"></div><div class="editor" id="jeb-editor"></div></div>
     <div class="editor-col" id="r2dec-col"><h3>r2dec</h3><div class="version" id="r2dec-version"></div><div class="editor" id="r2dec-editor"></div></div>
+    <div class="editor-col" id="r2ghidra-col"><h3>r2ghidra</h3><div class="version" id="r2ghidra-version"></div><div class="editor" id="r2ghidra-editor"></div></div>
     <div class="editor-col" id="reko-col"><h3>Reko</h3><div class="version" id="reko-version"></div><div class="editor" id="reko-editor"></div></div>
     <div class="editor-col" id="retdec-col"><h3>RetDec</h3><div class="version" id="retdec-version"></div><div class="editor" id="retdec-editor"></div></div>
     <div class="editor-col" id="snowman-col"><h3>Snowman</h3><div class="version" id="snowman-version"></div><div class="editor" id="snowman-editor"></div></div>
@@ -180,7 +187,7 @@ body {
 
 <script type="text/javascript">
 
-    var services = ['angr', 'binja', 'ghidra', 'hexrays', 'jeb', 'r2dec', 'reko', 'retdec', 'snowman'];
+    var services = ['angr', 'binja', 'ghidra', 'hexrays', 'jeb', 'r2dec', 'r2ghidra', 'reko', 'retdec', 'snowman'];
     var editors = {};
     var version_boxes = {};
     var options = [];

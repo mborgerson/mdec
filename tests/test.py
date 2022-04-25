@@ -25,7 +25,7 @@ class ServicesTest(unittest.TestCase):
 			src_path = os.path.join(TEST_ROOT, 'src', 'fib.c')
 			bin_path = os.path.join(working_dir, 'fib')
 			subprocess.run(['gcc', '-o', bin_path, src_path], check=True)
-			for service_name in ['angr', 'r2dec', 'reko', 'retdec', 'snowman']:
+			for service_name in ['angr', 'r2dec', 'r2ghidra', 'reko', 'retdec', 'snowman']:
 				self._test_service(service_name, bin_path)
 
 

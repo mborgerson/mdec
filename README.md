@@ -13,6 +13,7 @@ Supported Decompilers
 * [Hex-Rays](https://hex-rays.com/decompiler/)<sup>[1]</sup>
 * [JEB CE](https://www.pnfsoftware.com/jeb/community-edition)<sup>[2]</sup>
 * [r2dec](https://github.com/wargio/r2dec-js)
+* [r2ghidra](https://github.com/radareorg/r2ghidra)
 * [Reko](https://github.com/uxmal/reko)
 * [RetDec](https://github.com/avast/retdec)
 * [Snowman](https://github.com/yegord/snowman)

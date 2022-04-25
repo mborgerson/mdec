@@ -18,6 +18,7 @@ jobs:
           angr \
           ghidra \
           r2dec \
+          r2ghidra \
           reko \
           retdec \
           snowman
@@ -28,6 +29,7 @@ jobs:
           angr \
           ghidra \
           r2dec \
+          r2ghidra \
           reko \
           retdec \
           snowman
