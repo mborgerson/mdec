@@ -8,16 +8,18 @@ Explore multiple decompilers and compare their output with minimal effort. Uploa
 Supported Decompilers
 ---------------------
 * [angr](https://angr.io/)
-* [Binary Ninja](https://binary.ninja/)
+* [Binary Ninja](https://binary.ninja/)<sup>[1]</sup>
 * [Ghidra](https://ghidra-sre.org/)
-* [Hex-Rays](https://hex-rays.com/decompiler/)
-* [JEB CE](https://www.pnfsoftware.com/jeb/community-edition)
+* [Hex-Rays](https://hex-rays.com/decompiler/)<sup>[1]</sup>
+* [JEB CE](https://www.pnfsoftware.com/jeb/community-edition)<sup>[2]</sup>
 * [r2dec](https://github.com/wargio/r2dec-js)
 * [Reko](https://github.com/uxmal/reko)
 * [RetDec](https://github.com/avast/retdec)
 * [Snowman](https://github.com/yegord/snowman)
 
-**Note:** For Hex-Rays and Binary Ninja, you must provide license and binaries; other decompilers will be downloaded automatically.
+**Notes:**
+  1. Hex-Rays and Binary Ninja require license and binaries; other decompilers will be downloaded automatically.
+  2. JEB CE requires a license code. It's free. More info [here](backend/jeb/private/README.md).
 
 Components
 ----------
@@ -31,7 +33,18 @@ You'll need to add your proprietary packages in `backend/*/private`. Then just:
 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build
 ```
 
-**Tip:** If you want to build only a few services, append the service names to the above command (e.g. frontend, angr, etc.)
+**Tip:** If you want to build only a few services, append the service names to the above command. For example, to build only the free/open source decompilers you can specify:
+
+```
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build \
+  frontend \
+  angr \
+  ghidra \
+  r2dec \
+  reko \
+  retdec \
+  snowman
+```
 
 Run
 ---
