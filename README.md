@@ -1,4 +1,4 @@
-**Update:** mdec is now deprecated in favor of the community maintaind [decompiler-explorer](https://github.com/decompiler-explorer/decompiler-explorer) project!
+**Update:** mdec is now deprecated in favor of the community maintained [decompiler-explorer](https://github.com/decompiler-explorer/decompiler-explorer) project!
 
 mdec
 ====
